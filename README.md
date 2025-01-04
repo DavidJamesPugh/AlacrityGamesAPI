@@ -1,8 +1,5 @@
-# React + Vite
+# Learning React and NodeJS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the third part of the Fullstack open course, where this is creating a backend with Node JS, and linking with the React frontend.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is an API to retrieve notes and update them - to interact with Part2 of the course

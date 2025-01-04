@@ -1,7 +1,8 @@
+//import express from 'express';
 console.log("Hello World, lets get building");
 
 const express = require('express');
-const app = express()
+const app = express();
 const cors = require('cors');
 let notes = [
     {
@@ -39,6 +40,7 @@ const requestLogger = (request, response, next) => {
 app.use(express.json());
 app.use(cors());
 app.use(requestLogger);
+app.use(express.static('dist'))
 
 app.get('/', (req, res) => {
     res.send('Hello dave')
