@@ -43,31 +43,36 @@ app.get('/api/notes/', (req, res) => {
 });
 
 app.get('/api/notes/:id', (request, response) => {
-    const id = request.params.id
-    const note = notes.find(n => n.id === id)
-    if (note) {response.json(note)} else {response.status(404).end()}
-})
+    Note.findById(request.params.id).then(note =>  {
+        response.json(note);
+    });
+});
 
 app.post('/api/notes', (request, response) => {
 
     const body = request.body;
+
     if (!body.content) {
         return response.status(400).json({
             error: 'content missing'
         })
     }
 
-    const note = {
+    const note = new Note({
         content: body.content,
-        important: Boolean(body.important) || false,
-        id: generateId()
-    }
-    notes = notes.concat(note);
+        important: body.important || false
 
-    response.json(note);
+    });
+
+    note.save().then(savedNote => {
+        response.json(savedNote);
+    });
 })
 
 app.delete('/api/notes/:id', (request, response) => {
+    Note.deleteOne({_id: request.params.id}).then(() => {
+        console.log("Note deleted");
+    });
     const id = request.params.id
     notes = notes.filter(n=> n.id !== id)
     response.status(204).end()
