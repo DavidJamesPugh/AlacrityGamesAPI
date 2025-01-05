@@ -1,26 +1,11 @@
-//import express from 'express';
 console.log("Hello World, lets get building");
 
+require('dotenv').config({path: './fsoenvironment.env'})
 const express = require('express');
 const app = express();
 const cors = require('cors');
-let notes = [
-    {
-        id: "1",
-        content: "HTML is easy",
-        important: true
-    },
-    {
-        id: "2",
-        content: "Browser can execute only JavaScript",
-        important: false
-    },
-    {
-        id: "3",
-        content: "GET and POST are the most important methods of HTTP protocol",
-        important: true
-    }
-]
+
+const Note = require('./models/note')
 
 const generateId = () => {
     const maxId = notes.length > 0 ? Math.max(...notes.map(n=> Number(n.id))) : 0;
@@ -45,9 +30,17 @@ app.use(express.static('dist'))
 app.get('/', (req, res) => {
     res.send('Hello dave')
 })
-app.get('/api/notes', (req, res) => {
-    res.json(notes)
-})
+app.get('/api/notes/', (req, res) => {
+    Note.find({})
+        .then(notes => {
+            console.log("Fetched notes:", notes);
+            res.json(notes);
+        })
+        .catch(err => {
+            console.error("Error fetching notes:", err);
+            res.status(500).send({ error: "Unable to fetch notes" });
+        });
+});
 
 app.get('/api/notes/:id', (request, response) => {
     const id = request.params.id
