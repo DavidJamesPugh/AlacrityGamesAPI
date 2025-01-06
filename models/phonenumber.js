@@ -2,18 +2,7 @@
 const mongoose = require('mongoose');
 
 
-mongoose.set('strictQuery',false);
-const url = process.env.MONGODB_URI_PHONE;
-
-
-console.log('connecting to', url)
-mongoose.connect(url)
-    .then(result => {
-        console.log('connected to MongoDB')
-    })
-    .catch((error) => {
-        console.log('error connecting to MongoDB:', error.message)
-    })
+const dbForPhone = mongoose.connection.useDb('phoneBook');
 
 
 const phoneSchema = new mongoose.Schema({
@@ -27,4 +16,4 @@ phoneSchema.set('toJSON', {
         delete returnedObject.__v
     }
 })
-module.exports = mongoose.model('PhoneNumber', phoneSchema)
+module.exports = dbForPhone.model('PhoneNumber', phoneSchema)

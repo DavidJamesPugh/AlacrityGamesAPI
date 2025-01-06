@@ -5,10 +5,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-const Note = require('./models/note')
-const PhoneNumber = require('./models/phonenumber')
-let notes = [];
-let phonenumberlist = [];
 
 const requestLogger = (request, response, next) => {
     console.log("Method: ", request.method);
@@ -24,6 +20,16 @@ app.use(express.json());
 app.use(cors());
 app.use(requestLogger);
 app.use(express.static('dist'))
+
+
+const connectToDatabase = require('./models/mongodbconnect'); // Import the database connection function
+const Note = require('./models/note')
+const PhoneNumber = require('./models/phonenumber')
+const url = process.env.MONGODB_URI;
+connectToDatabase(url);
+
+let notes = [];
+let phonenumberlist = [];
 
 app.get('/', (req, res) => {
     res.send('Hello dave')
@@ -82,13 +88,13 @@ app.delete('/api/notes/:id', (request, response) => {
 //Phone Region
 app.get('/api/phonebook/', (req, res) => {
     PhoneNumber.find({})
-        .then(notes => {
-            console.log("Fetched notes:", notes);
-            res.json(notes);
+        .then(phoneentry => {
+            console.log("Fetched phone numbers:", phoneentry);
+            res.json(phoneentry);
         })
         .catch(err => {
-            console.error("Error fetching notes:", err);
-            res.status(500).send({ error: "Unable to fetch notes" });
+            console.error("Error fetching numbers:", err);
+            res.status(500).send({ error: "Unable to fetch phone numbers" });
         });
 });
 
@@ -110,7 +116,7 @@ app.post('/api/phonebook', (request, response) => {
 
     const phoneentry = new PhoneNumber({
         name: body.name,
-        number: body.number || false
+        phone: body.phone
 
     });
 
