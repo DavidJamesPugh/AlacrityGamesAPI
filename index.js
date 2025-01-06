@@ -19,7 +19,7 @@ const requestLogger = (request, response, next) => {
 app.use(express.json());
 app.use(cors());
 app.use(requestLogger);
-app.use(express.static('dist'))
+app.use(express.static('dist'));
 
 
 const connectToDatabase = require('./models/mongodbconnect'); // Import the database connection function
