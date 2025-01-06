@@ -6,11 +6,9 @@ const app = express();
 const cors = require('cors');
 
 const Note = require('./models/note')
-
-const generateId = () => {
-    const maxId = notes.length > 0 ? Math.max(...notes.map(n=> Number(n.id))) : 0;
-    return String(maxId +1);
-}
+const PhoneNumber = require('./models/phonenumber')
+let notes = [];
+let phonenumberlist = [];
 
 const requestLogger = (request, response, next) => {
     console.log("Method: ", request.method);
@@ -30,6 +28,8 @@ app.use(express.static('dist'))
 app.get('/', (req, res) => {
     res.send('Hello dave')
 })
+
+//Note Region
 app.get('/api/notes/', (req, res) => {
     Note.find({})
         .then(notes => {
@@ -74,9 +74,61 @@ app.delete('/api/notes/:id', (request, response) => {
         console.log("Note deleted");
     });
     const id = request.params.id
-    notes = notes.filter(n=> n.id !== id)
+    notes = notes.filter(n => n.id !== id)
     response.status(204).end()
 })
+//
+
+//Phone Region
+app.get('/api/phonebook/', (req, res) => {
+    PhoneNumber.find({})
+        .then(notes => {
+            console.log("Fetched notes:", notes);
+            res.json(notes);
+        })
+        .catch(err => {
+            console.error("Error fetching notes:", err);
+            res.status(500).send({ error: "Unable to fetch notes" });
+        });
+});
+
+app.get('/api/phonebook/:id', (request, response) => {
+    PhoneNumber.findById(request.params.id).then(entry =>  {
+        response.json(entry);
+    });
+});
+
+app.post('/api/phonebook', (request, response) => {
+
+    const body = request.body;
+
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    }
+
+    const phoneentry = new PhoneNumber({
+        name: body.name,
+        number: body.number || false
+
+    });
+
+    phoneentry.save().then(savedNumber => {
+        response.json(savedNumber);
+    });
+})
+
+app.delete('/api/phonebook/:id', (request, response) => {
+    PhoneNumber.deleteOne({_id: request.params.id}).then(() => {
+        console.log("Note deleted");
+    });
+    const id = request.params.id
+    phonenumberlist = phonenumberlist.filter(n=> n.id !== id)
+    response.status(204).end()
+})
+//
+
 const PORT = process.env.PORT ||  3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
