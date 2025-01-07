@@ -15,11 +15,18 @@ const requestLogger = (request, response, next) => {
     next();
 }
 
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message);
 
-app.use(express.json());
-app.use(cors());
-app.use(requestLogger);
-app.use(express.static('dist'));
+    if(error.name === 'CastError') {
+        return response.status(400).send({error: 'malformatted id' })
+    }
+    next(error);
+}
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
 
 
 const connectToDatabase = require('./models/mongodbconnect'); // Import the database connection function
@@ -28,8 +35,10 @@ const PhoneNumber = require('./models/phonenumber')
 const url = process.env.MONGODB_URI;
 connectToDatabase(url);
 
-let notes = [];
-let phonenumberlist = [];
+app.use(express.static('dist'));
+app.use(express.json());
+app.use(cors());
+app.use(requestLogger);
 
 app.get('/', (req, res) => {
     res.send('Hello dave')
@@ -48,10 +57,43 @@ app.get('/api/notes/', (req, res) => {
         });
 });
 
-app.get('/api/notes/:id', (request, response) => {
-    Note.findById(request.params.id).then(note =>  {
-        response.json(note);
-    });
+app.get('/api/notes/:id', (request, response, next) => {
+    const entryId = request.params.id;
+    Note.findById(entryId).then(note =>  {
+        if (note) {
+            response.json(note);
+        } else {
+            response.status(404).end();
+        }
+    }).catch(error => next(error));
+});
+
+
+app.put('/api/notes/:id', (request, response,next) => {
+    const entryId = request.params.id;
+    const { content, important } = request.body;
+
+    // Validate the request body
+    if (!content) {
+        return response.status(400).json({
+            error: 'Content missing',
+        });
+    }
+
+    // Update the note
+    Note.findByIdAndUpdate(
+        entryId,
+        { content, important: Boolean(important) },
+        { new: true, runValidators: true, context: 'query' }
+    )
+        .then(updatedNote => {
+            if (updatedNote) {
+                response.json(updatedNote);
+            } else {
+                response.status(404).json({ error: 'Note not found' });
+            }
+        })
+        .catch(error => next(error)); // Pass errors to error handler middleware
 });
 
 app.post('/api/notes', (request, response) => {
@@ -75,33 +117,47 @@ app.post('/api/notes', (request, response) => {
     });
 })
 
-app.delete('/api/notes/:id', (request, response) => {
-    Note.deleteOne({_id: request.params.id}).then(() => {
+app.delete('/api/notes/:id', (request, response,next) => {
+    Note.findByIdAndDelete(request.params.id).then(result => {
         console.log("Note deleted");
-    });
-    const id = request.params.id
-    notes = notes.filter(n => n.id !== id)
-    response.status(204).end()
-})
+        response.status(204).end();
+    }).catch(error => next(error));
+});
 //
 
 //Phone Region
-app.get('/api/phonebook/', (req, res) => {
+app.get('/api/phonebook/', (req, res,next) => {
     PhoneNumber.find({})
         .then(phoneentry => {
             console.log("Fetched phone numbers:", phoneentry);
             res.json(phoneentry);
         })
-        .catch(err => {
-            console.error("Error fetching numbers:", err);
-            res.status(500).send({ error: "Unable to fetch phone numbers" });
-        });
+        .catch(err => next(err));
 });
 
-app.get('/api/phonebook/:id', (request, response) => {
+app.get('/api/phonebook/:id', (request, response,next) => {
     PhoneNumber.findById(request.params.id).then(entry =>  {
-        response.json(entry);
-    });
+        if(entry){
+            response.json(entry);
+        } else {
+            response.status(404).end();
+        }
+
+    }).catch(error => next(error))
+});
+
+app.put('/api/phonebook/:id', (request, response, next) => {
+    const body = request.body;
+
+    const phoneEntry = {
+        name: body.name,
+        phone: body.phone
+    }
+
+    PhoneNumber.findByIdAndUpdate(request.params.id, phoneEntry, {new:true}).then(result => {
+        response.json(result);
+    }).catch(error => next(error));
+
 });
 
 app.post('/api/phonebook', (request, response) => {
@@ -111,7 +167,7 @@ app.post('/api/phonebook', (request, response) => {
     if (!body.name) {
         return response.status(400).json({
             error: 'content missing'
-        })
+        });
     }
 
     const phoneentry = new PhoneNumber({
@@ -123,19 +179,21 @@ app.post('/api/phonebook', (request, response) => {
     phoneentry.save().then(savedNumber => {
         response.json(savedNumber);
     });
-})
+});
 
-app.delete('/api/phonebook/:id', (request, response) => {
-    PhoneNumber.deleteOne({_id: request.params.id}).then(() => {
+app.delete('/api/phonebook/:id', (request, response,next) => {
+    PhoneNumber.findByIdAndDelete(request.params.id).then(result => {
         console.log("Note deleted");
-    });
-    const id = request.params.id
-    phonenumberlist = phonenumberlist.filter(n=> n.id !== id)
-    response.status(204).end()
-})
+        response.status(204).end();
+    }).catch(error => next(error));
+});
 //
 
 const PORT = process.env.PORT ||  3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
-})
+});
+
+// handler of requests with unknown endpoint
+app.use(unknownEndpoint);
+app.use(errorHandler);
