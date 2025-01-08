@@ -16,10 +16,16 @@ const requestLogger = (request, response, next) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-    console.error(error.message);
 
     if(error.name === 'CastError') {
         return response.status(400).send({error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+
+        const errors = Object.values(error.errors).map(err => err.message);
+        return response.status(400).json({
+            error: 'Validation error',
+            details: errors,
+        });
     }
     next(error);
 }
@@ -48,11 +54,9 @@ app.get('/', (req, res) => {
 app.get('/api/notes/', (req, res) => {
     Note.find({})
         .then(notes => {
-            console.log("Fetched notes:", notes);
             res.json(notes);
         })
         .catch(err => {
-            console.error("Error fetching notes:", err);
             res.status(500).send({ error: "Unable to fetch notes" });
         });
 });
@@ -96,7 +100,7 @@ app.put('/api/notes/:id', (request, response,next) => {
         .catch(error => next(error)); // Pass errors to error handler middleware
 });
 
-app.post('/api/notes', (request, response) => {
+app.post('/api/notes', (request, response, next) => {
 
     const body = request.body;
 
@@ -114,8 +118,8 @@ app.post('/api/notes', (request, response) => {
 
     note.save().then(savedNote => {
         response.json(savedNote);
-    });
-})
+    }).catch(error => next(error));
+});
 
 app.delete('/api/notes/:id', (request, response,next) => {
     Note.findByIdAndDelete(request.params.id).then(result => {
@@ -124,12 +128,13 @@ app.delete('/api/notes/:id', (request, response,next) => {
     }).catch(error => next(error));
 });
 //
+//
 
+//
 //Phone Region
 app.get('/api/phonebook/', (req, res,next) => {
     PhoneNumber.find({})
         .then(phoneentry => {
-            console.log("Fetched phone numbers:", phoneentry);
             res.json(phoneentry);
         })
         .catch(err => next(err));
@@ -154,13 +159,13 @@ app.put('/api/phonebook/:id', (request, response, next) => {
         phone: body.phone
     }
 
-    PhoneNumber.findByIdAndUpdate(request.params.id, phoneEntry, {new:true}).then(result => {
+    PhoneNumber.findByIdAndUpdate(request.params.id, phoneEntry, { new:true, runValidators: true, context: 'query' }).then(result => {
         response.json(result);
     }).catch(error => next(error));
 
 });
 
-app.post('/api/phonebook', (request, response) => {
+app.post('/api/phonebook', (request, response,next) => {
 
     const body = request.body;
 
@@ -178,12 +183,12 @@ app.post('/api/phonebook', (request, response) => {
 
     phoneentry.save().then(savedNumber => {
         response.json(savedNumber);
-    });
+    }).catch(error => next(error));
 });
 
 app.delete('/api/phonebook/:id', (request, response,next) => {
     PhoneNumber.findByIdAndDelete(request.params.id).then(result => {
-        console.log("Note deleted");
+
         response.status(204).end();
     }).catch(error => next(error));
 });

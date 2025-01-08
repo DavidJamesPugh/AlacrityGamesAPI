@@ -6,7 +6,11 @@ const mongoose = require('mongoose');
 const dbForNotes = mongoose.connection.useDb('noteApp');
 
 const noteSchema = new mongoose.Schema({
-    content: String,
+    content: {
+        type: String,
+        minLength: 3,
+        required: true
+    },
     important: Boolean,
 })
 noteSchema.set('toJSON', {

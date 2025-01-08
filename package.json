@@ -15,6 +15,12 @@
     "mongoose": "^8.9.3"
   },
   "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@stylistic/eslint-plugin-js": "^2.12.1",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "globals": "^15.14.0",
     "nodemon": "^3.1.9"
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
