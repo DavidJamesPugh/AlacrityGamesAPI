@@ -9,6 +9,9 @@ module.exports = {
   ],
   plugins: ['import'], // Manually include the import plugin
   rules: {
+    "import/extensions": ["error", "ignorePackages", {
+      "js": "always"
+    }],
     // Rules from eslint-plugin-import and custom rules
     'import/no-unresolved': 'error',
     'import/named': 'error',

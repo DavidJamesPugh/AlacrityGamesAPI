@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
-import Note from './models/note';
-import PhoneNumber from './models/phonenumber';
-import connectToDatabase from './models/mongodbconnect';
+import Note from './models/note.js';
+import PhoneNumber from './models/phonenumber.js';
+import connectToDatabase from './models/mongodbconnect.js';
 
 const app = express();
 
