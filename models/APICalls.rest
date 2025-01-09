@@ -12,3 +12,12 @@ Content-Type: application/json
 }
 
 ###
+
+POST localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "The masters of disc golf",
+  "author": "Katsu Donburi"
+
+}
