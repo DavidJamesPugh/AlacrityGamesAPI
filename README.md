@@ -1,5 +1,8 @@
 # Learning React and NodeJS
 
-This is the third part of the Fullstack open course, where this is creating a backend with Node JS, and linking with the React frontend.
+This is the fourth part of the Fullstack open course, where this is extending the 
+third part of the course - a Node JS backend server, and linking with the React frontend made in
+Part 2. The Frontend is housed in the dist folder.
 
-This is an API to retrieve notes and update them - to interact with Part2 of the course
+This is an API to retrieve notes and Phone numbers, and 
+define CRUD operations on them
