@@ -1,17 +1,15 @@
 import mongoose from 'mongoose';
 
-const dbForNotes = mongoose.connection.useDb('noteApp');
+const blogsTable = mongoose.connection.useDb('blogsApp');
 
-const noteSchema = new mongoose.Schema({
-  content: {
-    type: String,
-    required: true,
-    minlength: 5,
-  },
-  important: Boolean,
+const blogSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  author: { type: String, required: true },
+  url: { type: String },
+  likes: { type: Number },
 });
 
-noteSchema.set('toJSON', {
+blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     // eslint-disable-next-line no-underscore-dangle,no-param-reassign
     returnedObject.id = returnedObject._id.toString();
@@ -22,6 +20,6 @@ noteSchema.set('toJSON', {
   },
 });
 
-const Note = dbForNotes.model('Note', noteSchema);
+const Blog = blogsTable.model('blogsApp', blogSchema);
 
-export default Note;
+export default Blog;
