@@ -1,18 +1,17 @@
 import mongoose from 'mongoose';
 
-const dbForNotes = mongoose.connection.useDb('noteApp');
-
 const noteSchema = new mongoose.Schema({
   content: {
     type: String,
-    minLength: 3,
     required: true,
+    minlength: 5,
   },
   important: Boolean,
 });
+
 noteSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    // eslint-disable-next-line no-param-reassign,no-underscore-dangle
+    // eslint-disable-next-line no-underscore-dangle,no-param-reassign
     returnedObject.id = returnedObject._id.toString();
     // eslint-disable-next-line no-param-reassign,no-underscore-dangle
     delete returnedObject._id;
@@ -21,5 +20,6 @@ noteSchema.set('toJSON', {
   },
 });
 
-const Note = dbForNotes.model('Note', noteSchema);
+const Note = mongoose.model('Note', noteSchema);
+
 export default Note;
