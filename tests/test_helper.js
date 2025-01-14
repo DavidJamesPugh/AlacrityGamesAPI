@@ -16,6 +16,7 @@ const nonExistingId = async () => {
   await note.save();
   await note.deleteOne();
 
+  // eslint-disable-next-line no-underscore-dangle
   return note._id.toString();
 };
 
