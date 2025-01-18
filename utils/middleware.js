@@ -12,6 +12,7 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
 
+// eslint-disable-next-line consistent-return
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message);
 

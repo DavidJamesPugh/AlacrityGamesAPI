@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import asyncerrors from 'express-async-errors';
 import { config } from './utils/config.js';
 import notesRouter from './controllers/notes.js';
 import blogsRouter from './controllers/blogs.js';
@@ -11,6 +12,7 @@ const app = express();
 
 mongoose.set('strictQuery', false);
 
+logger.info('connecting to', process.env.NODE_ENV);
 logger.info('connecting to', config.MONGODB_URI);
 
 mongoose.connect(config.MONGODB_URI)
