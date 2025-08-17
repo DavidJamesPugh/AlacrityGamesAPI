@@ -3189,7 +3189,7 @@
                         iconX: 2,
                         iconY: 0,
                         runningCostPerTick: 0,
-                        price: 50,
+                        price: 500,
                         priceRefund: 1,
                         strategy: { type: "buyer", purchaseResources: { ironOre: { price: 0, amount: 1 } }, outputResourcesOrder: ["ironOre"], interval: 10 },
                     },
