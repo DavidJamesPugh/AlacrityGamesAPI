@@ -3,6 +3,16 @@ GET http://localhost:3001/api/notes/3
 
 ###
 
+# Make a purchase
+curl "http://localhost:3001/api/games/makePurchase?package_id=extraticks&user_hash=abc123&timezone=Pacific%2FAuckland&back_url=http%3A%2F%2Flocalhost%3A3001&site=grestGames"
+curl "http://localhost:3001/api/games/makePurchase?package_id=extraticks&user_hash=abc123"
+
+# List purchases
+curl "http://localhost:3001/api/games/getPurchases?user_hash=abc123"
+
+# Consume a purchase
+curl "http://localhost:3001/api/games/setConsumed?user_hash=abc123&created=CREATED_VALUE_FROM_LIST"
+
 POST http://localhost:3001/api/notes
 Content-Type: application/json
 

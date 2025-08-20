@@ -1,10 +1,15 @@
 import { logger } from './logger.js';
 
 const requestLogger = (request, response, next) => {
+  logger.info('=== INCOMING REQUEST ===');
   logger.info('Method:', request.method);
   logger.info('Path:  ', request.path);
-  logger.info('Body:  ', request.body);
-  logger.info('---');
+  if(request.query && Object.keys(request.query).length > 0){
+    logger.info('Query: ', request.query);
+  }
+  if(request.body && Object.keys(request.body).length > 0){
+    logger.info('Body:  ', request.body);
+  }
   next();
 };
 

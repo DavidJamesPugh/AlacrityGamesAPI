@@ -3189,7 +3189,7 @@
                         iconX: 2,
                         iconY: 0,
                         runningCostPerTick: 0,
-                        price: 500,
+                        price: 50,
                         priceRefund: 1,
                         strategy: { type: "buyer", purchaseResources: { ironOre: { price: 0, amount: 1 } }, outputResourcesOrder: ["ironOre"], interval: 10 },
                     },
@@ -3348,7 +3348,7 @@
             return {
                 userHash: { key: "FactoryIdleUserHash" },
                 imageMap: { path: "" },
-                api: { server: { url: "https://api.grestgames.com/factoryidle" }, armorGames: { gameKey: "" }, local: { storageKey: "FactoryIdleLocal" } },
+                api: { server: { url: "/api/games" }, armorGames: { gameKey: "" }, local: { storageKey: "FactoryIdleLocal" } },
                 saveManager: { cloudSaveIntervalMs: 9e5, localSaveIntervalMs: 5e3 },
                 main: { warnToStoreUserHashAfterTicks: { 1e4: !0, 1e5: !0, 1e6: !0 } },
             };
@@ -7208,7 +7208,7 @@
         define("play/api/api/PlayFabApi", ["../lib/playFab/PlayFabClientApi"], function () {
             var e = "PlayFab",
                 t = function (e) {
-                    (PlayFab.settings.titleId = "775A"), (this.customId = e);
+                    (PlayFab.settings.titleId = "1BFF70"), (this.customId = e);
                 };
             return (
                 (t.prototype._getMetaVarName = function (e) {
