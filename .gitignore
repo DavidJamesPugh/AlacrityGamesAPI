@@ -25,3 +25,4 @@ dist-ssr
 /.github/
 /public/
 Todo.txt
+distOLD/*
