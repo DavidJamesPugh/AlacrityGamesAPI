@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import { config } from './utils/config.js';
-import gameapiRouter from './controllers/gameapi.js';
+import gameapiRouter from './controllers/gameAPI.js';
 import { middleware } from './utils/middleware.js';
 import { logger } from './utils/logger.js';
 
