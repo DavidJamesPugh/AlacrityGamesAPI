@@ -60,7 +60,7 @@ gameapiRouter.get('/makePurchase', async (request, response) => {
 
   //Use paypal API to capture payment. If successful, create a purchase record and redirect to the back_url.
   
-try {
+  try {
     // Get PayPal access token
     const accessToken = await getPayPalAccessToken();
 
