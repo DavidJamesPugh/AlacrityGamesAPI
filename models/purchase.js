@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+const dbForPurchases = mongoose.connection.useDb('purchases');
 const purchaseSchema = new mongoose.Schema({
 	userHash: { type: String, required: true, index: true },
 	packageId: { type: String, required: true },
@@ -15,6 +15,8 @@ const purchaseSchema = new mongoose.Schema({
 	returnUrl: { type: String },
 	cancelUrl: { type: String },
 	paypalOrderId: { type: String, index: true },
+	token: {type: String},
+	payerId: {type: String},
 	paypalCaptured: { type: Boolean, default: false },
 	
 	// PlayFab fields
@@ -39,7 +41,7 @@ purchaseSchema.set('toJSON', {
 	},
 });
 
-const Purchase = mongoose.model('Purchase', purchaseSchema);
+const Purchase = dbForPurchases.model('Purchase', purchaseSchema);
 
 export default Purchase;
 

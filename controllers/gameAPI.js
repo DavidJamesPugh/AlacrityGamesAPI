@@ -56,7 +56,6 @@ gameapiRouter.get('/makePurchase', async (request, response) => {
   }
 
 
-  const created = Date.now();
 
   //Use paypal API to capture payment. If successful, create a purchase record and redirect to the back_url.
   
@@ -135,14 +134,14 @@ gameapiRouter.get('/confirmPurchase', async (request, response) => {
       back_url: backUrl,
       site,
       token,
-      PayerID
+      PayerId
     } = request.query;
 
 
     if (!token) {
       return response.status(400).json({ code: 1, error: 'PayPal token is required' });
     }
-
+    const created = Date.now();
       // Create purchase record with PayPal order ID
       await Purchase.create({
         userHash,
@@ -152,10 +151,10 @@ gameapiRouter.get('/confirmPurchase', async (request, response) => {
         site,
         timezone,
         backUrl,
-        paypalOrderId: paypalData.id
+        token: token,
+        PayerId: PayerId
       });
     
-
       // Redirect back to the game
       if (backUrl) {
         return response.redirect(backUrl);
@@ -170,7 +169,7 @@ gameapiRouter.get('/confirmPurchase', async (request, response) => {
         } 
       });
     } catch (error) {
-    return response.status(500).json({ code: 1, error: 'Internal server error' });
+    return response.status(500).json({ code: 1, error: error.message  });
   }
 });
 
