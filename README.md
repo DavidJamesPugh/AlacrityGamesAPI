@@ -1,8 +1,7 @@
-# Learning React and NodeJS
+# Games API
 
-This is the fourth part of the Fullstack open course, where this is extending the 
-third part of the course - a Node JS backend server, and linking with the React frontend made in
-Part 2. The Frontend is housed in the dist folder.
+Creating an API to carry the Purchase/Paypal flow for games made
+Logging to a MongoDB
+Based on FullStackOpen's course
 
-This is an API to retrieve notes and Phone numbers, and 
-define CRUD operations on them
+Using a dist folder of Bundled JS for a front end
