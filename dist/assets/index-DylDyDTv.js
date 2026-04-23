@@ -753,17 +753,17 @@ Expecting `+T.join(", ")+", got '"+(this.terminals_[S]||S)+"'":I="Parse error on
       <ins class="adsbygoogle"
         style="display:inline-block;width:320px;height:100px"
         data-ad-client="ca-pub-3638495999842466"
-        data-ad-slot="4288235097"></ins>
+        data-ad-slot="8895924371"></ins>
     </div>`),t.insertAdjacentHTML("afterbegin",`<div style="float:left;width:728px;height:90px">
       <ins class="adsbygoogle"
         style="display:inline-block;width:728px;height:90px"
         data-ad-client="ca-pub-3638495999842466"
-        data-ad-slot="2811501890"></ins>
+        data-ad-slot="3835169385"></ins>
     </div>`),t.insertAdjacentHTML("beforeend",`<div style="float:right;width:300px;height:600px">
       <ins class="adsbygoogle"
         style="display:inline-block;width:300px;height:600px"
         data-ad-client="ca-pub-3638495999842466"
-        data-ad-slot="1334768690"></ins>
+        data-ad-slot="8374014348"></ins>
     </div>`),t.classList.add("mainWithAdd");const i=()=>{const r=document.getElementById("gameArea");if(!r)return;const X=r.getBoundingClientRect().top;t.style.setProperty("--main-top-inset",`${Math.max(0,Math.round(X))}px`)},s=()=>{i()};window.addEventListener("resize",s,{passive:!0}),requestAnimationFrame(()=>{requestAnimationFrame(i)}),window.adsbygoogle=window.adsbygoogle||[],window.adsbygoogle.push({}),window.adsbygoogle.push({}),window.adsbygoogle.push({})}class eX{constructor(e,t){this.play=e,this.imageMap=t,this.globalUiEm=he}setupFocusChecker(){let e=document.hasFocus();this.focusInterval=setInterval(()=>{const t=document.hasFocus();e!==t&&(e=t,e?this.globalUiEm.invokeEvent($.FOCUS):this.globalUiEm.invokeEvent($.BLUR))},200)}display(e){this.container=e,this.runningInBackgroundInfoUi=new jn(this.globalUiEm),this.runningInBackgroundInfoUi.init();const t=this.play.getGame().getTicker(),i=new Jn,s=Date.now(),r=()=>{const X=Date.now()-s;t.getNoOfTicks()<1e3&&X>=100&&(i.display(),this.play.getGame().getEventManager().removeListener("MainUi",A.TICKS_STARTED,r))};this.play.getGame().getEventManager().addListener("MainUi",A.TICKS_STARTED,r),this.setupFocusChecker(),this.play.getGame().getIsPremium()?console.info("MainUi: Premium version, skipping loading ads"):Zn(),window.addEventListener("keypress",X=>{this.globalUiEm.invokeEvent($.KEY_PRESS,X)}),window.addEventListener("beforeunload",()=>{this.play.getSaveManager().saveAuto()}),this.globalUiEm.addListener("MainUi",$.SHOW_MAIN_GAME,()=>{this._showUi("mainGame")}),this.play.getGame().getEventManager().addListener("MainUi",A.GAME_TICK,()=>{const X=this.play.getGame().getTicker().getNoOfTicks();if(oe.meta.warnToStoreUserHashAfterTicks[X]){const c=`userHashTmpAlert${Math.round(1e10*Math.random())}`,u=`
                     You seem to be enjoying the game! Here is a good tip that maybe will save the day once!<br/>
                     Make a copy of your user hash. User hash is used to find your save game and purchases if you have any.<br/>
